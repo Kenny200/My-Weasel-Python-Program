@@ -5,7 +5,7 @@ import string
 target_phrase = "METHINKS IT IS LIKE A WEASEL"
 letters = string.ascii_uppercase + ' '
 num_offspring = 100
-probability = 5
+probability = 3
 
 def generate_word():
     return ''.join(random.choice(letters) for _ in range(28))
@@ -34,20 +34,24 @@ def fitness(child):
     child_char = list(child)
     target_char = list(target_phrase)
     fitness_score = 0
-    for i in len(child_char):
-        if i == target_char[i]:
+    for c, t in zip(child_char, target_char):
+        if c == t:
             fitness_score += 1
     return fitness_score
 
-sons_of_adam = create_offspring(adam)
-
-while cain != adam:
-    fitness_scores = []
-    for string in sons_of_adam:
-        fitness(string)
-        fitness_scores.append(string)
-    print(fitness_scores)
-
+def score_offspring(offspring):
+    best_score = 0
+    best_child = offspring[0]
     
-print(adam)
-#print(cain)
+    for child in offspring:
+        score = fitness(child)
+    
+        if score > best_score:
+            best_score = score
+            best_child = string
+    return best_child
+
+sons_of_adam = create_offspring(adam)
+final_child = score_offspring(sons_of_adam)
+
+print(final_child)
